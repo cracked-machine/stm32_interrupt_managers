@@ -20,44 +20,57 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// @brief For example on how to use this class, see https://godbolt.org/z/rx53GcrsE
 
-#include <stm32g0_interrupt_manager.hpp>
+#ifndef __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
+#define __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
+
+#include <array>
+#include <functional>
+#include <memory>
 
 namespace stm32::isr
 {
 
-extern "C" void EXTI4_15_IRQHandler(void)
+class STM32G0InterruptManager
 {
-    // call std::function at this ISR index
-    if (STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ] != nullptr)
-    {
-        STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ]();
-    }
-    else
-    {
-        while(true)
-        {
-            // No function found at STM32G0InterruptManager::exti5
-        }
-    }
-}
+public:
+    STM32G0InterruptManager() = default;
 
-extern "C" void DMA1_Channel1_IRQHandler(void)
-{
-    // call std::function at this ISR index
-    if (STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ] != nullptr)
+    // list of interrupt types
+    enum class InterruptType
     {
-        STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ]();
-    }
-    else
-    {
-        while(true)
-        {
-            // No function found at STM32G0InterruptManager::dma1_ch2
-        }
-        
-    }
-}
+        exti0,
+        exti1,
+        exti2,
+        exti3,
+        exti4,
+        exti5,
+        dma1_ch2,
+
+        capacity,
+    };
+    
+    // list of mapped InterruptTypes to pointers to interrupt handlers
+    static inline std::array<
+        STM32G0InterruptManager*,
+        static_cast<std::size_t>(InterruptType::capacity)
+    > m_interrupt_handlers;
+    
+    // function to map InterruptType to pointers to interrupt handlers
+    static void register_handler(InterruptType interrupt_type, STM32G0InterruptManager *handler);
+
+    
+    virtual void ISR() = 0;
+
+};
+
+
+extern "C" void EXTI4_15_IRQHandler(void);
+extern "C" void DMA1_Channel1_IRQHandler(void);
 
 } // namespace stm32::isr
 
+
+
+#endif  // __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__

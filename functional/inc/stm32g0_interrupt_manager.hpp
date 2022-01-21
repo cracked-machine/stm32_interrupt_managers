@@ -20,8 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef __STM32G0_INTERRUPT_MANAGERS_HPP__
-#define __STM32G0_INTERRUPT_MANAGERS_HPP__
+// @brief For example on how to use this class, see https://godbolt.org/z/envs5KjTn
+
+#ifndef __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
+#define __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
 
 #include <array>
 #include <functional>
@@ -37,8 +39,14 @@ public:
     // list of interrupt types
     enum class InterruptType
     {
+        exti0,
+        exti1,
+        exti2,
+        exti3,
+        exti4,
         exti5,
         dma1_ch2,
+
         capacity,
     };
     
@@ -52,7 +60,13 @@ public:
     template <typename INTERRUPT_TYPE>
     static void register_callback(INTERRUPT_TYPE interrupt_type, std::function<void()> &callable);
 
+    
+    // static void register_callback(InterruptType interrupt_type, std::function<void()> &callable);
+
 };
+
+
+
 
 // specialised template function for "enum class InterruptType"
 template <> inline
@@ -79,4 +93,4 @@ extern "C" void DMA1_Channel1_IRQHandler(void);
 
 
 
-#endif  // __STM32G0_INTERRUPT_MANAGERS_HPP__
+#endif  // __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
