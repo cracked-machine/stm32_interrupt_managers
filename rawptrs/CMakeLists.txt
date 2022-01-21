@@ -1,4 +1,4 @@
-# include this using `add_subdirectory(stm32_interrupt_managers/raw)`
+# include this using `add_subdirectory(stm32_interrupt_managers/rawptrs)`
 target_sources(${BUILD_NAME} PRIVATE
     # put source files here
     src/stm32g0_interrupt_manager.cpp
