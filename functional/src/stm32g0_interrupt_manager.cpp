@@ -26,7 +26,21 @@
 namespace stm32::isr
 {
 
-
+void STM32G0InterruptManager::register_callback(const InterruptType &interrupt_type, const std::function<void()> callable)
+{
+    if (m_interrupt_callbacks[ static_cast<int>(interrupt_type) ] == nullptr)
+    {
+        m_interrupt_callbacks[ static_cast<int>(interrupt_type) ] = callable;
+    }
+    else
+    {
+        while(true) 
+        {
+            // error this slot has been allocated
+        }
+        
+    }
+}
 
 extern "C" void EXTI4_15_IRQHandler(void)
 {

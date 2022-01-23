@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// @brief For example on how to use this class, see https://godbolt.org/z/envs5KjTn
+// @brief For example on how to use this class, see https://godbolt.org/z/jxb38GGhE
 
 #ifndef __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
 #define __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
@@ -56,35 +56,9 @@ public:
         static_cast<std::size_t>(InterruptType::capacity)
     > m_interrupt_callbacks;
     
-    // template function to map InterruptType to std::function callables
-    template <typename INTERRUPT_TYPE>
-    static void register_callback(INTERRUPT_TYPE interrupt_type, std::function<void()> &callable);
-
-    
-    // static void register_callback(InterruptType interrupt_type, std::function<void()> &callable);
+    static void register_callback(const InterruptType &interrupt_type, const std::function<void()> callable);
 
 };
-
-
-
-
-// specialised template function for "enum class InterruptType"
-template <> inline
-void STM32G0InterruptManager::register_callback(InterruptType interrupt_type, std::function<void()> &callable)
-{
-    if (m_interrupt_callbacks[ static_cast<int>(interrupt_type) ] == nullptr)
-    {
-        m_interrupt_callbacks[ static_cast<int>(interrupt_type) ] = callable;
-    }
-    else
-    {
-        while(true) 
-        {
-            // error this slot has been allocated
-        }
-        
-    }
-}
 
 extern "C" void EXTI4_15_IRQHandler(void);
 extern "C" void DMA1_Channel1_IRQHandler(void);
