@@ -34,11 +34,7 @@ void STM32G0InterruptManager::register_handler(InterruptType interrupt_type, STM
     }
     else
     {
-        while(true) 
-        {
-            // error this slot has been allocated
-        }
-        
+        while(true) { /* error this slot has been allocated */ }        
     }
 }
 
@@ -51,10 +47,7 @@ extern "C" void EXTI4_15_IRQHandler(void)
     }
     else
     {
-        while(true)
-        {
-            // No function found at STM32G0InterruptManager::exti5
-        }
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }     
     }
 }
 
@@ -67,13 +60,39 @@ extern "C" void DMA1_Channel1_IRQHandler(void)
     }
     else
     {
-        while(true)
-        {
-            // No function found at STM32G0InterruptManager::dma1_ch2
-        }
-        
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }     
     }
 }
+
+extern "C" void TIM15_IRQHandler(void)
+{
+    // call std::function at this ISR index
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim15 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim15 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }        
+    }
+
+}
+
+extern "C" void TIM16_FDCAN_IT0_IRQHandler(void)
+{
+    // call std::function at this ISR index
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim16 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim16 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
+    }
+
+
+}
+
 
 } // namespace stm32::isr
 

@@ -40,14 +40,10 @@ public:
     // list of interrupt types
     enum class InterruptType
     {
-        exti0,
-        exti1,
-        exti2,
-        exti3,
-        exti4,
         exti5,
         dma1_ch2,
-
+        tim15,
+        tim16,
         capacity,
     };
     
@@ -68,6 +64,8 @@ public:
 
 extern "C" void EXTI4_15_IRQHandler(void);
 extern "C" void DMA1_Channel1_IRQHandler(void);
+extern "C" void TIM16_FDCAN_IT0_IRQHandler(void);
+extern "C" void TIM15_IRQHandler(void);
 
 } // namespace stm32::isr
 
