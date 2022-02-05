@@ -26,7 +26,6 @@
 #define __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
 
 #include <array>
-#include <functional>
 #include <memory>
 
 namespace stm32::isr
