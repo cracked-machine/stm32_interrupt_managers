@@ -40,7 +40,6 @@ void STM32G0InterruptManager::register_handler(InterruptType interrupt_type, STM
 
 extern "C" void EXTI4_15_IRQHandler(void)
 {
-    // call std::function at this ISR index
     if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ] != nullptr)
     {
         STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ]->ISR();
@@ -53,7 +52,6 @@ extern "C" void EXTI4_15_IRQHandler(void)
 
 extern "C" void DMA1_Channel1_IRQHandler(void)
 {
-    // call std::function at this ISR index
     if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ] != nullptr)
     {
         STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ]->ISR();
@@ -66,7 +64,6 @@ extern "C" void DMA1_Channel1_IRQHandler(void)
 
 extern "C" void TIM15_IRQHandler(void)
 {
-    // call std::function at this ISR index
     if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim15 ) ] != nullptr)
     {
         STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim15 ) ]->ISR();
@@ -80,7 +77,6 @@ extern "C" void TIM15_IRQHandler(void)
 
 extern "C" void TIM16_FDCAN_IT0_IRQHandler(void)
 {
-    // call std::function at this ISR index
     if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim16 ) ] != nullptr)
     {
         STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim16 ) ]->ISR();
@@ -89,10 +85,32 @@ extern "C" void TIM16_FDCAN_IT0_IRQHandler(void)
     {
         while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
     }
-
-
 }
 
+
+extern "C" void USART3_4_5_6_LPUART1_IRQHandler(void)
+{
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::usart5 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::usart5 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
+    }
+}
+
+extern "C" void TIM7_LPTIM2_IRQHandler(void)
+{
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim7 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim7 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
+    }
+}
 
 } // namespace stm32::isr
 

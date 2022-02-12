@@ -41,9 +41,11 @@ public:
     {
         exti5,
         dma1_ch2,
+        tim7,
         tim15,
         tim16,
-        capacity,
+        usart5,
+        capacity,   // special type to get the max size. Do not select as an interrupt vector!
     };
     
     // list of mapped InterruptTypes to pointers to interrupt handlers
@@ -65,7 +67,8 @@ extern "C" void EXTI4_15_IRQHandler(void);
 extern "C" void DMA1_Channel1_IRQHandler(void);
 extern "C" void TIM16_FDCAN_IT0_IRQHandler(void);
 extern "C" void TIM15_IRQHandler(void);
-
+extern "C" void USART3_4_5_6_LPUART1_IRQHandler(void);
+extern "C" void TIM7_LPTIM2_IRQHandler(void);
 } // namespace stm32::isr
 
 
