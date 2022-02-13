@@ -75,6 +75,23 @@ extern "C" void TIM15_IRQHandler(void)
 
 }
 
+extern "C" void TIM3_TIM4_IRQHandler(void)
+{
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim3 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim3 ) ]->ISR();
+    }
+    else if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim4 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim4 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }        
+    }
+
+}
+
 extern "C" void TIM16_FDCAN_IT0_IRQHandler(void)
 {
     if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim16 ) ] != nullptr)
