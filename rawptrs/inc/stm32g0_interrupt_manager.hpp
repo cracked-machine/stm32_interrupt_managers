@@ -41,9 +41,11 @@ public:
     {
         exti5,
         dma1_ch2,
+        tim2,
         tim3,
         tim4,
         tim7,
+        tim14,
         tim15,
         tim16,
         usart5,
@@ -72,6 +74,8 @@ extern "C" void TIM15_IRQHandler(void);
 extern "C" void USART3_4_5_6_LPUART1_IRQHandler(void);
 extern "C" void TIM7_LPTIM2_IRQHandler(void);
 extern "C" void TIM3_TIM4_IRQHandler(void);
+extern "C" void TIM14_IRQHandler(void);
+extern "C" void TIM2_IRQHandler(void);
 } // namespace stm32::isr
 
 

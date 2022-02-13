@@ -89,7 +89,18 @@ extern "C" void TIM3_TIM4_IRQHandler(void)
     {
         while(true) { /* No ISR registered in STM32G0InterruptManager */ }        
     }
+}
 
+extern "C" void TIM14_IRQHandler(void)
+{
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim14 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim14 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }        
+    }    
 }
 
 extern "C" void TIM16_FDCAN_IT0_IRQHandler(void)
@@ -127,6 +138,18 @@ extern "C" void TIM7_LPTIM2_IRQHandler(void)
     {
         while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
     }
+}
+
+extern "C" void TIM2_IRQHandler(void)
+{
+    if (STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim2 ) ] != nullptr)
+    {
+        STM32G0InterruptManager::m_interrupt_handlers[ static_cast<int>( STM32G0InterruptManager::InterruptType::tim2 ) ]->ISR();
+    }
+    else
+    {
+        while(true) { /* No ISR registered in STM32G0InterruptManager */ }             
+    }    
 }
 
 } // namespace stm32::isr
