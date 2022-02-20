@@ -22,62 +22,71 @@
 
 // @brief For example on how to use this class, see https://godbolt.org/z/rx53GcrsE
 
-#ifndef __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
-#define __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
+#ifndef __ISR_MANAGER_STM32G0_HPP__
+#define __ISR_MANAGER_STM32G0_HPP__
 
 #include <array>
 #include <memory>
 
+#include <isr_manager_stm32_base.hpp>
+
 namespace stm32::isr
 {
 
-class STM32G0InterruptManager
+
+// List of interrupt types specific to STM32G0 devices. Used to specialise InterruptManagerStm32Base<BASE_ISR_ENUM>
+enum class InterruptTypeStm32g0
 {
-public:
-    STM32G0InterruptManager() = default;
-
-    // list of interrupt types
-    enum class InterruptType
-    {
-        exti5,
-        dma1_ch2,
-        tim2,
-        tim3,
-        tim4,
-        tim7,
-        tim14,
-        tim15,
-        tim16,
-        usart5,
-        capacity,   // special type to get the max size. Do not select as an interrupt vector!
-    };
-    
-    // list of mapped InterruptTypes to pointers to interrupt handlers
-    static inline std::array<
-        STM32G0InterruptManager*,
-        static_cast<std::size_t>(InterruptType::capacity)
-    > m_interrupt_handlers;
-    
-    // function to map InterruptType to pointers to interrupt handlers
-    static void register_handler(InterruptType interrupt_type, STM32G0InterruptManager *handler);
-
-    
-    virtual void ISR() = 0;
-
+    exti5,
+    dma1_ch2,
+    tim2,
+    tim3,
+    tim4,
+    tim7,
+    tim14,
+    tim15,
+    tim16,
+    usart5,
+    capacity,   // special type to get the max size. Do not select as an interrupt vector!
 };
 
+// @brief This is specialization of InterruptManagerStm32Base for STM32G0 devices
+class InterruptManagerStm32g0 : public InterruptManagerStm32Base<InterruptTypeStm32g0>
+{
+public:
+    InterruptManagerStm32g0() = default;
+};
 
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::exti5
 extern "C" void EXTI4_15_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::dma1_ch2
 extern "C" void DMA1_Channel1_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim16
 extern "C" void TIM16_FDCAN_IT0_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim15
 extern "C" void TIM15_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::usart3, 
+// InterruptTypeStm32g0::usart4, InterruptTypeStm32g0::usart5, InterruptTypeStm32g0::usart6 and lpuart
 extern "C" void USART3_4_5_6_LPUART1_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim7 and InterruptTypeStm32g0::lptim2
 extern "C" void TIM7_LPTIM2_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim3 and InterruptTypeStm32g0::tim4
 extern "C" void TIM3_TIM4_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim14
 extern "C" void TIM14_IRQHandler(void);
+
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim2
 extern "C" void TIM2_IRQHandler(void);
+
 } // namespace stm32::isr
 
 
 
-#endif  // __STM32G0_INTERRUPT_MANAGERS_RAW_HPP__
+#endif  // __ISR_MANAGER_STM32G0_HPP__

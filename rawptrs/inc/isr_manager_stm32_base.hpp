@@ -20,51 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// @brief For example on how to use this class, see https://godbolt.org/z/jxb38GGhE
+// @brief For example on how to use this class, see https://godbolt.org/z/rx53GcrsE
 
-#ifndef __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
-#define __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
+#ifndef __ISR_MANAGER_BASE_HPP__
+#define __ISR_MANAGER_BASE_HPP__
 
 #include <array>
-#include <functional>
+#include <memory>
 
 namespace stm32::isr
 {
 
-class InterruptManagerStm32g0
+template<typename BASE_ISR_ENUM>
+class InterruptManagerStm32Base 
 {
 public:
-    InterruptManagerStm32g0() = default;
+    // pure virtual ISR function. To be implemented in a derived class, owned by the driver.
+    virtual void ISR() = 0;
 
-    // list of interrupt types
-    enum class InterruptTypeStm32g0
+    // list of mapped interrupt handlers to BASE_ISR_ENUM
+    static inline std::array<InterruptManagerStm32Base*, static_cast<std::size_t>(BASE_ISR_ENUM::capacity)> m_interrupt_handlers;
+
+    // function to map interrupt handlers to BASE_ISR_ENUM
+    void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
     {
-        exti0,
-        exti1,
-        exti2,
-        exti3,
-        exti4,
-        exti5,
-        dma1_ch2,
-
-        capacity,
-    };
-    
-    // list of mapped InterruptTypeStm32g0s to std::function callables
-    static inline std::array<
-        std::function<void()>,
-        static_cast<std::size_t>(InterruptTypeStm32g0::capacity)
-    > m_interrupt_callbacks;
-    
-    static void register_callback(const InterruptTypeStm32g0 &interrupt_type, const std::function<void()> callable);
-
+        if (m_interrupt_handlers[ static_cast<int>(interrupt_type) ] == nullptr)
+        {
+            m_interrupt_handlers[ static_cast<int>(interrupt_type) ] = handler;
+        }
+        else
+        {
+            while(true) { /* error this slot has been allocated */ }        
+        }
+    }
 };
 
-extern "C" void EXTI4_15_IRQHandler(void);
-extern "C" void DMA1_Channel1_IRQHandler(void);
 
 } // namespace stm32::isr
 
-
-
-#endif  // __STM32G0_INTERRUPT_MANAGERS_FUNCTIONAL_HPP__
+#endif // __ISR_MANAGER_BASE_HPP__

@@ -26,7 +26,7 @@
 namespace stm32::isr
 {
 
-void STM32G0InterruptManager::register_callback(const InterruptType &interrupt_type, const std::function<void()> callable)
+void InterruptManagerStm32g0::register_callback(const InterruptTypeStm32g0 &interrupt_type, const std::function<void()> callable)
 {
     if (m_interrupt_callbacks[ static_cast<int>(interrupt_type) ] == nullptr)
     {
@@ -45,15 +45,15 @@ void STM32G0InterruptManager::register_callback(const InterruptType &interrupt_t
 extern "C" void EXTI4_15_IRQHandler(void)
 {
     // call std::function at this ISR index
-    if (STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ] != nullptr)
+    if (InterruptManagerStm32g0::m_interrupt_callbacks[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ] != nullptr)
     {
-        STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::exti5 ) ]();
+        InterruptManagerStm32g0::m_interrupt_callbacks[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ]();
     }
     else
     {
         while(true)
         {
-            // No function found at STM32G0InterruptManager::exti5
+            // No function found at InterruptManagerStm32g0::exti5
         }
     }
 }
@@ -61,15 +61,15 @@ extern "C" void EXTI4_15_IRQHandler(void)
 extern "C" void DMA1_Channel1_IRQHandler(void)
 {
     // call std::function at this ISR index
-    if (STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ] != nullptr)
+    if (InterruptManagerStm32g0::m_interrupt_callbacks[ static_cast<int>( InterruptTypeStm32g0::dma1_ch2 ) ] != nullptr)
     {
-        STM32G0InterruptManager::m_interrupt_callbacks[ static_cast<int>( STM32G0InterruptManager::InterruptType::dma1_ch2 ) ]();
+        InterruptManagerStm32g0::m_interrupt_callbacks[ static_cast<int>( InterruptTypeStm32g0::dma1_ch2 ) ]();
     }
     else
     {
         while(true)
         {
-            // No function found at STM32G0InterruptManager::dma1_ch2
+            // No function found at InterruptManagerStm32g0::dma1_ch2
         }
         
     }
