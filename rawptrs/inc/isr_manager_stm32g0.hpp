@@ -38,6 +38,7 @@ namespace stm32::isr
 enum class InterruptTypeStm32g0
 {
     exti5,
+    exti10,
     dma1_ch2,
     tim2,
     tim3,

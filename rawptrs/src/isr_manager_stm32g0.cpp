@@ -23,6 +23,16 @@
 
 #include <isr_manager_stm32g0.hpp>
 
+#if defined(X86_UNIT_TESTING_ONLY)
+#else
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wvolatile"
+		#include "main.h"
+		#include "i2c.h"	
+	#pragma GCC diagnostic pop
+
+#endif
+
 namespace stm32::isr
 {
 
@@ -30,14 +40,36 @@ namespace stm32::isr
 
 extern "C" void EXTI4_15_IRQHandler(void)
 {
-    if (InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ] != nullptr)
+    // This calls all registered (non-null) ISR functions. Add more as needed. Must add the following:
+    // 1. check if EXTI flag is set before calling ISR function (using LL_EXTI_IsActiveFallingFlag_0_31)
+    // 2. check ISR slot has a callback function set (not nullptr)
+    // 3. reset the interrupt flag for their EXTI (using LL_EXTI_ClearFallingFlag_0_31)
+    if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_5) != RESET)
     {
-        InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ]->ISR();
+        if (InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ] != nullptr)
+        {
+            InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ]->ISR();
+            LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_5);
+        }
+        else
+        {
+            while(true) { /* No ISR registered in InterruptManagerStm32g0 */ }     
+        }
     }
-    else
+    else if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_10) != RESET)
     {
-        while(true) { /* No ISR registered in InterruptManagerStm32g0 */ }     
+        if (InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti10 ) ] != nullptr)
+        {
+            InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti10 ) ]->ISR();
+            LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_10);
+        }
+        else
+        {
+            while(true) { /* No ISR registered in InterruptManagerStm32g0 */ }     
+        }
     }
+    
+
 }
 
 extern "C" void DMA1_Channel1_IRQHandler(void)
