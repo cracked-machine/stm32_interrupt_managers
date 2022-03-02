@@ -23,20 +23,10 @@
 
 #include <isr_manager_stm32g0.hpp>
 
-#if defined(X86_UNIT_TESTING_ONLY)
-#else
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wvolatile"
-		#include "main.h"
-		#include "i2c.h"	
-	#pragma GCC diagnostic pop
 
-#endif
 
 namespace stm32::isr
 {
-
-
 
 extern "C" void EXTI4_15_IRQHandler(void)
 {

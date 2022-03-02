@@ -28,6 +28,13 @@
 #include <array>
 #include <memory>
 
+#if defined(X86_UNIT_TESTING_ONLY)
+#else
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wvolatile"
+        #include <stm32g0xx_ll_exti.h>
+	#pragma GCC diagnostic pop
+#endif
 namespace stm32::isr
 {
 
