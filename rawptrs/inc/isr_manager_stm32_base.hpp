@@ -32,7 +32,7 @@
 #else
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wvolatile"
-        #include <stm32g0xx_ll_exti.h>
+        #include <stm32g0xx.h>
 	#pragma GCC diagnostic pop
 #endif
 namespace stm32::isr

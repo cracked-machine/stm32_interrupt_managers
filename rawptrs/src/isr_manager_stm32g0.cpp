@@ -34,24 +34,27 @@ extern "C" void EXTI4_15_IRQHandler(void)
     // 1. check if EXTI flag is set before calling ISR function (using LL_EXTI_IsActiveFallingFlag_0_31)
     // 2. check ISR slot has a callback function set (not nullptr)
     // 3. reset the interrupt flag for their EXTI (using LL_EXTI_ClearFallingFlag_0_31)
-    if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_5) != RESET)
+    if ( (EXTI->FPR1 & EXTI_IMR1_IM5) == EXTI_IMR1_IM5 )
     {
         if (InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ] != nullptr)
         {
             InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti5 ) ]->ISR();
-            LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_5);
+            // clear the falling flag for EXTI Line 5
+            EXTI->FPR1 = EXTI->FPR1 | EXTI_IMR1_IM5;
         }
         else
         {
             while(true) { /* No ISR registered in InterruptManagerStm32g0 */ }     
         }
     }
-    else if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_10) != RESET)
+    else if ( (EXTI->FPR1 & EXTI_IMR1_IM10) == EXTI_IMR1_IM10 )
     {
         if (InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti10 ) ] != nullptr)
         {
             InterruptManagerStm32g0::m_interrupt_handlers[ static_cast<int>( InterruptTypeStm32g0::exti10 ) ]->ISR();
-            LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_10);
+            // clear the falling flag for EXTI Line 10
+            EXTI->FPR1 = EXTI->FPR1 | EXTI_IMR1_IM10;            
+
         }
         else
         {
