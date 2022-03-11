@@ -88,6 +88,7 @@ extern "C" void TIM2_IRQHandler(void);
 
 } // namespace stm32::isr
 
-
+/// @brief convenience alias for ISR type enummeration
+using STM32G0_ISR = stm32::isr::InterruptTypeStm32g0;
 
 #endif  // __ISR_MANAGER_STM32G0_HPP__
