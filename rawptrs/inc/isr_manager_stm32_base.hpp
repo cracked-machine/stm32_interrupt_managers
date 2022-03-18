@@ -26,7 +26,6 @@
 #define __ISR_MANAGER_BASE_HPP__
 
 #include <array>
-#include <memory>
 
 #if defined(X86_UNIT_TESTING_ONLY)
 #else

@@ -26,7 +26,7 @@
 #define __ISR_MANAGER_STM32G0_HPP__
 
 #include <array>
-#include <memory>
+// #include <memory>
 
 #include <isr_manager_stm32_base.hpp>
 
