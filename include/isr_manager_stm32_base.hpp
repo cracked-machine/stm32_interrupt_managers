@@ -28,6 +28,7 @@
 #include <array>
 
 #if defined(X86_UNIT_TESTING_ONLY)
+    #include <mock_cmsis.hpp>
 #else
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wvolatile"
