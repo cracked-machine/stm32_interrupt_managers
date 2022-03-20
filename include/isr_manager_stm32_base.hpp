@@ -27,7 +27,8 @@
 
 #include <array>
 
-#if defined(X86_UNIT_TESTING_ONLY)
+#ifdef X86_UNIT_TESTING_ONLY
+    // This file should contain CMSIS bit definitions
     #include <mock_cmsis.hpp>
 #else
 	#pragma GCC diagnostic push
