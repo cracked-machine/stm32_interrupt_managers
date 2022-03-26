@@ -1,18 +1,17 @@
+[![CMake](https://github.com/cracked-machine/stm32_interrupt_managers/actions/workflows/cmake.yml/badge.svg)](https://github.com/cracked-machine/stm32_interrupt_managers/actions/workflows/cmake.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/cracked-machine/stm32_interrupt_managers)](https://app.codecov.io/gh/cracked-machine/stm32_interrupt_managers)
+
 ## C++ Interrupt Managers for STM32 platform
+
+See the [wiki](https://github.com/cracked-machine/stm32_interrupt_managers/wiki) for documentation / reference
+
+See `.vscode/tasks.json` for details on the individual toolchain commands.
 
 ### Running Units Tests on X86
 
-Running `cmake` in the root directory will invoke the tests.
-It is recommended to use VSCode and "CMake Tools" extension with Test Suite, but if you insist on using the CLI:
+When you run the default CMake build, the output is linked with the Catch2 library. 
 
-- Configure the testsuite:
-`cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/bin/x86_64-linux-gnu-gcc-10 -Bbuild -G Ninja .`
-- Build the testsuite
-`cmake --build build --config Debug --target all --`
-- Run the testsuite
-`./build/test_suite`
-- Clean the testsuite
-`cmake --build build --config Debug --target clean --`
+To run the testsuite use the command: `./build/test_suite`
 
 ### Adding this library to your STM32 Project
 
@@ -22,11 +21,4 @@ Include this repo into your project as a submodule and add the following line to
 
 This assumes your project's top-level CMakeFiles.txt is already configured for STM32 platform.
 
-### Debug
-
-`GDB` is enabled in VSCode (F5)
-
-### Code Coverage report
-
-Run the "coverage report" task. Results can be found in `coverage` directory.
 
