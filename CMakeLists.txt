@@ -10,7 +10,9 @@ if(CMAKE_PROJECT_NAME STREQUAL STM32_INTERRUPT_MANAGERS_TEST_SUITE)
     set(USED_API "__attribute__((__used__))")
     configure_file(cmake/gnuc_ext_defs.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/gnuc_ext_defs.hpp @ONLY)
     include_directories(build/include)
-    
+
+    add_definitions(-include ${CMAKE_BINARY_DIR}/embedded_utils/tests/mocks/mock.hpp) 
+
     include(cmake/linux.cmake)
 
     # BUILD_NAME is set in cmake/linux.cmake

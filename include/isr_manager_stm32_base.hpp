@@ -25,10 +25,7 @@
 #ifndef __ISR_MANAGER_BASE_HPP__
 #define __ISR_MANAGER_BASE_HPP__
 
-#ifdef X86_UNIT_TESTING_ONLY
-    // downloaded by CMake to build dir
-    #include <mock.hpp>
-#else
+#ifndef X86_UNIT_TESTING_ONLY
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wvolatile"
         #include <stm32g0xx.h>

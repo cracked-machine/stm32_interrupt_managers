@@ -23,8 +23,6 @@
 
 #include <isr_manager_stm32g0.hpp>
 
-
-
 namespace stm32::isr
 {
 
