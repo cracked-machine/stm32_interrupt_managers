@@ -11,8 +11,10 @@ if(CMAKE_PROJECT_NAME STREQUAL STM32_INTERRUPT_MANAGERS_TEST_SUITE)
     configure_file(cmake/gnuc_ext_defs.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/gnuc_ext_defs.hpp @ONLY)
     include_directories(build/include)
 
+    # include the mock library with all unit test build source files
     add_definitions(-include ${CMAKE_BINARY_DIR}/embedded_utils/tests/mocks/mock.hpp) 
 
+    # x86 build config
     include(cmake/linux.cmake)
 
     # BUILD_NAME is set in cmake/linux.cmake
@@ -21,6 +23,10 @@ if(CMAKE_PROJECT_NAME STREQUAL STM32_INTERRUPT_MANAGERS_TEST_SUITE)
 
     # add external deps from git repos
     include(cmake/external.cmake)
+    # we only need to include this for unit testing
+    target_include_directories(${BUILD_NAME} PRIVATE 
+        ${CMAKE_BINARY_DIR}/embedded_utils/tests/mocks
+    )
 
     # enable static analysis
     include(cmake/cppcheck.cmake)

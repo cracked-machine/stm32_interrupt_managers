@@ -7,12 +7,22 @@ See the [wiki](https://github.com/cracked-machine/stm32_interrupt_managers/wiki)
 
 See [readme](tests) for information on unit testing/mocking.
 
-### Adding this library to your STM32 Project
+#### Adding this library to your STM32 Project
 
-Include this repo into your project as a submodule and add the following line to your top-level CMakeFiles.txt:
+There are two ways to add this library to your project's CMakeLists.txt:
 
-`add_subdirectory(stm32_interrupt_managers)`
+1. Implicitly include the [external.cmake](cmake/external.cmake):
 
-This assumes your project's top-level CMakeFiles.txt is already configured for STM32 platform.
+```
+set(BUILD_NAME "MyProject")
+add_executable(${BUILD_NAME} "")
+include(cmake/external.cmake)
+```
+
+2. Explicitly add [embedded_utils](https://github.com/cracked-machine/embedded_utils.git) to your project as a submodule and add the subdirectory:
+
+```
+add_subdirectory(extern/embedded_utils)
+```
 
 
