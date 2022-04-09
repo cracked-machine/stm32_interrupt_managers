@@ -25,17 +25,20 @@
 #ifndef __ISR_MANAGER_BASE_HPP__
 #define __ISR_MANAGER_BASE_HPP__
 
-#include <array>
-
 #ifdef X86_UNIT_TESTING_ONLY
-    // This file should contain CMSIS bit definitions
-    #include <mock_cmsis.hpp>
+    // downloaded by CMake to build dir
+    #include <mock.hpp>
 #else
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wvolatile"
         #include <stm32g0xx.h>
 	#pragma GCC diagnostic pop
 #endif
+
+// defines "USED_API __attribute__((__used__))"
+#include <gnuc_ext_defs.hpp>
+
+#include <array>
 namespace stm32::isr
 {
 
@@ -50,7 +53,7 @@ public:
     static inline std::array<InterruptManagerStm32Base*, static_cast<std::size_t>(BASE_ISR_ENUM::capacity)> m_interrupt_handlers;
 
     // function to map interrupt handlers to BASE_ISR_ENUM
-    void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
+    USED_API void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
     {
         if (m_interrupt_handlers[ static_cast<int>(interrupt_type) ] == nullptr)
         {

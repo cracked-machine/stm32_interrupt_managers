@@ -4,14 +4,49 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "CMake: Configure",
+            "label": "Cleanup files",
             "type": "shell",
-            "command": "cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/bin/x86_64-linux-gnu-gcc-10 -Bbuild -G Ninja ."
+            "command": "rm",
+            "args": [
+                "-rf",
+                "${workspaceRoot}/build/CMakeFiles/test_suite.dir/",
+                "${workspaceRoot}/coverage/*",
+            ]
         },
         {
-            "label": "CMake: Clean Rebuild",
+            "label": "CMake: Configure",
             "type": "shell",
-            "command": "cmake --build build --config Debug --target clean --; cmake --build build --config Debug --target all --"
+            "command": "cmake",
+            "args": [
+                "--no-warn-unused-cli",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
+                "-DCMAKE_BUILD_TYPE:STRING=Debug",
+                "-DCMAKE_C_COMPILER:FILEPATH=/bin/x86_64-linux-gnu-gcc-10",
+                "-Bbuild",
+                "-G", "Ninja", ".",
+            ]
+        },
+        {
+            "label": "CMake: Clean",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Debug",
+                "--target", "clean",
+                "--",
+            ]
+        },
+        {
+            "label": "CMake: Build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Debug",
+                "--target", "all", 
+                "--",
+            ]
         },
         {
             "label": "Run",
@@ -22,38 +57,58 @@
         {
             "label": "Create HTML report",
             "type": "shell",
-            "command": "rm coverage/*; gcovr  -r . -e build -e '(.+)/tests/(.+)' --html --html-details -o coverage/index.html"
+            "command": "gcovr",
+            "args": [
+                "-r", "${workspaceRoot}",
+                "-e", "tests/catch.*$",
+                "-e", "build.*$",
+                "--exclude-unreachable-branches",
+                "--html-self-contained",
+                "--html-absolute-paths",
+                "--html",
+                "--html-details",
+                "-o", "${workspaceRoot}/coverage/index.html",
+            ]
         },
         {
             "label": "Create XML report",
             "type": "shell",
-            "command": "rm coverage/*; gcovr  -r . -e build -e '(.+)/tests/(.+)' --xml --xml-pretty  -o coverage/coverage.xml"
-        },
-        {
-            "label": "Convert HTML to PDF",
-            "type": "shell",
-            "command": "wkhtmltopdf ${workspaceRoot}/coverage/index.html ${workspaceRoot}/coverage/*.html ${workspaceRoot}/coverage/code.pdf"
-        },
-        {
-            "label": "Delete HTML",
-            "type": "shell",
-            "command": "rm ${workspaceRoot}/coverage/*.html"
+            "command": "gcovr",
+            "args": [
+                "-r", "${workspaceRoot}",
+                "-e", "tests/catch.*$",
+                "-e", "build.*$",
+                "--exclude-unreachable-branches",
+                "--xml",
+                "--xml-pretty",
+                "-o", "coverage/coverage.xml",
+            ]
         },
         {
             "label": "Open coverage report",
             "type": "shell",
-            "command": "firefox ${workspaceRoot}/coverage/code.pdf"
+            "command": "firefox",
+            "args": [ "${workspaceRoot}/coverage/index.html" ]
+        },
+        {
+            "label": "RunTests",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Cleanup files",
+                "CMake: Configure",
+                "CMake: Clean",
+                "CMake: Build",
+                "Run"
+            ],
+            "problemMatcher": []
         },
         {
             "label": "Complete All Tasks",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "CMake: Configure",
-                "CMake: Clean Rebuild",
-                "Run",
+                "RunTests",
+                "Create XML report",
                 "Create HTML report",
-                "Convert HTML to PDF",
-                "Delete HTML",
                 "Open coverage report"
             ],
             "problemMatcher": []
