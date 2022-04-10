@@ -25,11 +25,12 @@
 #ifndef __ISR_MANAGER_BASE_HPP__
 #define __ISR_MANAGER_BASE_HPP__
 
-#ifndef X86_UNIT_TESTING_ONLY
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wvolatile"
-        #include <stm32g0xx.h>
-	#pragma GCC diagnostic pop
+// add groups for device family
+#if defined (STM32G071xx) || defined (STM32G081xx) || defined (STM32G070xx) \
+|| defined (STM32G030xx) || defined (STM32G031xx) || defined (STM32G041xx) \
+|| defined (STM32G0B0xx) || defined (STM32G0B1xx) || defined (STM32G0C1xx) \
+|| defined (STM32G050xx) || defined (STM32G051xx) || defined (STM32G061xx)		
+	#include <stm32g0xx.h>
 #endif
 
 // defines "USED_API __attribute__((__used__))"
