@@ -33,8 +33,7 @@
 	#include <stm32g0xx.h>
 #endif
 
-// defines "USED_API __attribute__((__used__))"
-#include <gnuc_ext_defs.hpp>
+
 
 #include <array>
 namespace stm32::isr
@@ -51,7 +50,7 @@ public:
     static inline std::array<InterruptManagerStm32Base*, static_cast<std::size_t>(BASE_ISR_ENUM::capacity)> m_interrupt_handlers;
 
     // function to map interrupt handlers to BASE_ISR_ENUM
-    USED_API void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
+    void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
     {
         if (m_interrupt_handlers[ static_cast<int>(interrupt_type) ] == nullptr)
         {
