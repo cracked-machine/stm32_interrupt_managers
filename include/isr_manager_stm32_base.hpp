@@ -26,43 +26,40 @@
 #define __ISR_MANAGER_BASE_HPP__
 
 // add groups for device family
-#if defined (STM32G071xx) || defined (STM32G081xx) || defined (STM32G070xx) \
-|| defined (STM32G030xx) || defined (STM32G031xx) || defined (STM32G041xx) \
-|| defined (STM32G0B0xx) || defined (STM32G0B1xx) || defined (STM32G0C1xx) \
-|| defined (STM32G050xx) || defined (STM32G051xx) || defined (STM32G061xx)		
-	#include <stm32g0xx.h>
+#if defined(STM32G071xx) || defined(STM32G081xx) || defined(STM32G070xx) || defined(STM32G030xx) || defined(STM32G031xx) || defined(STM32G041xx) ||  \
+    defined(STM32G0B0xx) || defined(STM32G0B1xx) || defined(STM32G0C1xx) || defined(STM32G050xx) || defined(STM32G051xx) || defined(STM32G061xx)
+  #include <stm32g0xx.h>
 #endif
-
-
 
 #include <array>
 namespace stm32::isr
 {
 
-template<typename BASE_ISR_ENUM>
-class InterruptManagerStm32Base 
+template <typename BASE_ISR_ENUM>
+class InterruptManagerStm32Base
 {
 public:
-    // pure virtual ISR function. To be implemented in a derived class, owned by the driver.
-    virtual void ISR() = 0;
+  // pure virtual ISR function. To be implemented in a derived class, owned by the driver.
+  virtual void ISR() = 0;
 
-    // list of mapped interrupt handlers to BASE_ISR_ENUM
-    static inline std::array<InterruptManagerStm32Base*, static_cast<std::size_t>(BASE_ISR_ENUM::capacity)> m_interrupt_handlers;
+  // list of mapped interrupt handlers to BASE_ISR_ENUM
+  static inline std::array<InterruptManagerStm32Base *, static_cast<std::size_t>(BASE_ISR_ENUM::capacity)> m_interrupt_handlers;
 
-    // function to map interrupt handlers to BASE_ISR_ENUM
-    void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
+  // function to map interrupt handlers to BASE_ISR_ENUM
+  void register_handler(BASE_ISR_ENUM interrupt_type, InterruptManagerStm32Base *handler)
+  {
+    if (m_interrupt_handlers[static_cast<int>(interrupt_type)] == nullptr)
     {
-        if (m_interrupt_handlers[ static_cast<int>(interrupt_type) ] == nullptr)
-        {
-            m_interrupt_handlers[ static_cast<int>(interrupt_type) ] = handler;
-        }
-        else
-        {
-            while(true) { /* error this slot has been allocated */ }        
-        }
+      m_interrupt_handlers[static_cast<int>(interrupt_type)] = handler;
     }
+    else
+    {
+      while (true)
+      { /* error this slot has been allocated */
+      }
+    }
+  }
 };
-
 
 } // namespace stm32::isr
 

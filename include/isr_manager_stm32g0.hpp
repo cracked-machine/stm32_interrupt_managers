@@ -31,29 +31,29 @@
 namespace stm32::isr
 {
 
-
 // List of interrupt types specific to STM32G0 devices. Used to specialise InterruptManagerStm32Base<BASE_ISR_ENUM>
 enum class InterruptTypeStm32g0
 {
-    exti5,
-    exti10,
-    dma1_ch2,
-    tim2,
-    tim3,
-    tim4,
-    tim7,
-    tim14,
-    tim15,
-    tim16,
-    usart5,
-    capacity,   // special type to get the max size. Do not select as an interrupt vector!
+  exti5,
+  exti10,
+  exti15,
+  dma1_ch2,
+  tim2,
+  tim3,
+  tim4,
+  tim7,
+  tim14,
+  tim15,
+  tim16,
+  usart5,
+  capacity, // special type to get the max size. Do not select as an interrupt vector!
 };
 
 // @brief This is specialization of InterruptManagerStm32Base for STM32G0 devices
 class InterruptManagerStm32g0 : public InterruptManagerStm32Base<InterruptTypeStm32g0>
 {
 public:
-    InterruptManagerStm32g0() = default;
+  InterruptManagerStm32g0() = default;
 };
 
 // STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::exti5
@@ -68,7 +68,7 @@ extern "C" void TIM16_FDCAN_IT0_IRQHandler(void);
 // STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::tim15
 extern "C" void TIM15_IRQHandler(void);
 
-// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::usart3, 
+// STM32G0-specific ISR. Calls registered handler for InterruptTypeStm32g0::usart3,
 // InterruptTypeStm32g0::usart4, InterruptTypeStm32g0::usart5, InterruptTypeStm32g0::usart6 and lpuart
 extern "C" void USART3_4_5_6_LPUART1_IRQHandler(void);
 
@@ -86,7 +86,8 @@ extern "C" void TIM2_IRQHandler(void);
 
 } // namespace stm32::isr
 
-/// @brief convenience alias for ISR type enummeration
+/// @brief List of interrupt types specific to STM32G0 devices. Used to specialise
+/// InterruptManagerStm32Base<BASE_ISR_ENUM>
 using STM32G0_ISR = stm32::isr::InterruptTypeStm32g0;
 
-#endif  // __ISR_MANAGER_STM32G0_HPP__
+#endif // __ISR_MANAGER_STM32G0_HPP__
